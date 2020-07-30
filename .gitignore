@@ -1,3 +1,4 @@
 .~lock.Documentación.docx#
 *.rtf
 *.docx
+node_modules/*
