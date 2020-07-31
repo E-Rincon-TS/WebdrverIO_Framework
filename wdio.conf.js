@@ -1,3 +1,5 @@
+var config = require('./mainConfig.js');
+
 exports.config = {
     //
     // ====================
@@ -17,11 +19,12 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/specs/**/*.js'
+        './test/specs/*.js'
     ],
     // Patterns to exclude.
     exclude: [
-        // 'path/to/excluded/files'
+        './test/pageobjects/*.js',
+        './examples/*.js'  
     ],
     //
     // ============
@@ -66,7 +69,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: config.logLevel,
     //
     // Set specific log levels per logger
     // loggers:
@@ -90,10 +93,10 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost',
+    baseUrl: config.baseUrl,
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: config.timeout,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -106,8 +109,11 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver'],
-    
+    services: ['selenium-standalone'],
+    port: 9999,
+    seleniumArgs:{
+        seleniumArgs: ['-port','9999']
+    },
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks.html
@@ -125,7 +131,7 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter.html
-    reporters: ['spec','mochawesome'],
+    reporters: ['dot'],
 
 
     
@@ -177,8 +183,10 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
-    // before: function (capabilities, specs) {
-    // },
+    before: function (capabilities, specs) {
+        expect=require('chai').expect;
+        should=require('chai').should();
+    },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {String} commandName hook command name
