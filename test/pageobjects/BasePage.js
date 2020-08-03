@@ -60,7 +60,17 @@ class BasePage{
             assert.fail();
         }
     }
-
+    expectIncludeIn(current, expected,wait=false,selector=false){
+        if(wait==true){
+            $(selector).waitForDisplayed(3000);
+        }
+        try{
+            expect(current).to.include(expected);
+        }catch(error){
+            console.log("El ERROR fue: "+error);
+            assert.fail();
+        }
+    }
     titleAssertion(expected){
         this.expectEqualTo(this.getUrlAndTitle().title, expected);
     }

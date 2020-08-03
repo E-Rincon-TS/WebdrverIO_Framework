@@ -33,19 +33,25 @@ class ContactUsPage extends BasePage {
             this.submitForm();
         }
         if(verify==true){
-            switch(submission){
-                case true:
-                    super.expectEqualTo(this.successfulSubmissionHeaderText,"Thank You for your Message!",true,this.successfulSubmissionHeader);
-                    break;
-                case false:
-                    super.expectEqualTo(this.unsuccessfulSubmissionHeaderText,"Error: all fields are required");
-                    break;
-            }
+            this.verifySubmissionHeader(submission);
         }
         
     }
+
     submitForm(){
         super.waitAndClick(this.submitButton);
     }
+
+    verifySubmissionHeader(submission){
+        switch(submission){
+            case true:
+                super.expectEqualTo(this.successfulSubmissionHeaderText,"Thank You for your Message!",true,this.successfulSubmissionHeader);
+                break;
+            case false:
+                super.expectIncludeIn(this.unsuccessfulSubmissionHeaderText,"Error: all fields are required");
+                break;
+        }
+    }
+    
 }
 module.exports =ContactUsPage.prototype;
