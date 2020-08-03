@@ -1,3 +1,5 @@
+const fs=require('fs');
+
 module.exports={
     randomEmail: function(length=5,number=false,especial=false){
         //let emailAddress="Mail."+Math.random().toString().replace('0.','')+"@mail.com";
@@ -17,5 +19,20 @@ module.exports={
            result += characters.charAt(Math.floor(Math.random() * characters.length));
         }
         return result;
+     },
+     jsonKey: function(path){
+        try{
+            var jsonString=fs.readFileSync(path);
+            try{
+                var json =JSON.parse(jsonString);
+                return json;
+            }catch(err){
+                console.log(error);
+                return;
+            }
+        }catch(error){
+            console.log(error);
+            return;
+        }
      }
 }
