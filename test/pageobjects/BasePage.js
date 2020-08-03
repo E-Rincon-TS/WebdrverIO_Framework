@@ -1,20 +1,26 @@
 class BasePage{
-    constructor(){
-
-    }
-    
-
+    /* This function opens the
+     */
     openUrlAndMaximize(url){
-        browser.url(url);
         browser.maximizeWindow();
+        browser.url(url);        
     }
 
-    setValue(selector , value){
+    sendKey(selector , value){
         try{
             browser.sendKeys(selector,value);
         }catch(error){
             console.log('A Error trying to send keys ocurred,  the error was: '+error);
         }        
+    }
+
+    setValue(element, value){
+        try{
+            element.setValue(value);
+        }catch(error){
+            console.log('A Error trying to send keys ocurred,  the error was: '+error);
+        }
+
     }
 
     waitAndSendKeys(selector,key){
@@ -43,7 +49,10 @@ class BasePage{
     }
     
     //Assertions
-    expectEqualTo(current, expected){
+    expectEqualTo(current, expected,wait=false,selector=false){
+        if(wait==true){
+            $(selector).waitForDisplayed(3000);
+        }
         try{
             expect(current).to.equal(expected);
         }catch(error){
